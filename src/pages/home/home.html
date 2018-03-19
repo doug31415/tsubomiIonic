@@ -1,0 +1,47 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+      Tsubomi Digital Guide
+    </ion-title>
+
+    <ion-buttons end>
+      <button ion-button (click)="toggleReorder()">{{shouldReorder ? 'done' : 'edit'}}</button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+
+  <!--refresh content-->
+  <ion-refresher (ionRefresh)="refreshPeople($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <!--list content-->
+  <ion-list [reorder]="shouldReorder"
+            (ionItemReorder)="$event.applyTo(people)">
+
+    <ion-item-sliding *ngFor="let person of people">
+      <ion-item (click)="pushPage(person)">
+        <ion-avatar item-left>
+          <img [src]="person.picture.thumbnail" alt="{{person.name.first}} {{person.name.last}}">
+        </ion-avatar>
+        {{person.name.first}} {{person.name.last}}
+
+        <ion-note item-right>{{person.phone}}</ion-note>
+      </ion-item>
+
+      <ion-item-options side="left">
+        <button ion-button>Hello</button>
+      </ion-item-options>
+
+      <ion-item-options side="right">
+        <button ion-button>Goodbye</button>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
+
+  <ion-infinite-scroll (ionInfinite)="doInfiniteScroll($event)">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</ion-content>
